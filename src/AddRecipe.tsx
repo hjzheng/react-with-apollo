@@ -50,7 +50,11 @@ function useInput(defaultValue: any, type: INPUT_TYPE) {
     }
   };
 
-  return [value, onChange];
+  const onReset = () => {
+    setValue(defaultValue);
+  };
+
+  return [value, onChange, onReset];
 }
 
 export function AddRecipe() {
@@ -103,6 +107,8 @@ export function AddRecipe() {
           <div>
             <button>Add Recipe</button>
           </div>
+          {loading && <p>Loading...</p>}
+          {error && <p>Error :( Please try again</p>}
         </form>
       )}
     </Mutation>
