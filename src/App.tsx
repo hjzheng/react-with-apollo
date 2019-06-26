@@ -1,7 +1,7 @@
 import React from "react";
 import ApolloClient from "apollo-boost";
-import gql from "graphql-tag";
-import { ApolloProvider, ApolloConsumer } from "react-apollo";
+import { ApolloProvider } from "react-apollo";
+import { Recipes } from "./Recipes";
 
 import "./App.css";
 
@@ -14,23 +14,7 @@ const App: React.FC = () => {
   return (
     <ApolloProvider client={client}>
       <div className="App">Hello Wrold</div>
-      <ApolloConsumer>
-        {client => {
-          client
-            .query({
-              query: gql`
-                {
-                  recipes {
-                    id
-                    title
-                  }
-                }
-              `
-            })
-            .then(result => console.log(result));
-          return null;
-        }}
-      </ApolloConsumer>
+      <Recipes />
     </ApolloProvider>
   );
 };
