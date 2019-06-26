@@ -17,6 +17,24 @@ npm run start:slow
 
 ### step2 fetch data using the query component
 
+### step3 dynamic arguments in query component
+
 ```js
-Query;
+const recipesQuery = gql`
+  {
+    recipes(vegetarian: true) {
+      id
+      title
+    }
+  }
+`;
+
+const recipesQuery = gql`
+  query recipes($vegetarian: Boolean! {
+    recipes(vegetarian: $ vegetarian) {
+      id
+      title
+    }
+  }
+`;
 ```
