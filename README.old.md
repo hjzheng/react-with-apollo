@@ -38,3 +38,5 @@ const recipesQuery = gql`
   }
 `;
 ```
+
+### step4 update data using the mutation component
