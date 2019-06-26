@@ -37,7 +37,10 @@ enum INPUT_TYPE {
   "TEXT"
 }
 
-function useInput(defaultValue: any, type: INPUT_TYPE) {
+function useInput(
+  defaultValue: any,
+  type: INPUT_TYPE
+): [any, (e: React.ChangeEvent<HTMLInputElement>) => void, () => void] {
   let [value, setValue] = useState(defaultValue);
 
   const onChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -58,8 +61,11 @@ function useInput(defaultValue: any, type: INPUT_TYPE) {
 }
 
 export function AddRecipe() {
-  let [title, onTileChange] = useInput("", INPUT_TYPE.TEXT);
-  let [vegetarian, onVegetarianChange] = useInput(false, INPUT_TYPE.CHECKBOX);
+  let [title, onTileChange, onTitleReset] = useInput("", INPUT_TYPE.TEXT);
+  let [vegetarian, onVegetarianChange, onVegetarianReset] = useInput(
+    false,
+    INPUT_TYPE.CHECKBOX
+  );
 
   return (
     <Mutation
@@ -91,6 +97,8 @@ export function AddRecipe() {
                 }
               }
             });
+            onTitleReset();
+            onVegetarianReset();
           }}
         >
           <label>
@@ -100,7 +108,7 @@ export function AddRecipe() {
             vegetarian:
             <input
               type="checkbox"
-              value={vegetarian}
+              checked={vegetarian}
               onChange={onVegetarianChange}
             />
           </label>
