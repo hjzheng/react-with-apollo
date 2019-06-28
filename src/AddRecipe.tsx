@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import gql from "graphql-tag";
+import FlexBox from "./FlexBox";
 import { ApolloError } from "apollo-boost";
 import { Mutation } from "react-apollo";
 
@@ -101,20 +102,30 @@ export function AddRecipe() {
             onVegetarianReset();
           }}
         >
-          <label>
-            Title: <input value={title} onChange={onTileChange} />
-          </label>
-          <label>
-            vegetarian:
-            <input
-              type="checkbox"
-              checked={vegetarian}
-              onChange={onVegetarianChange}
-            />
-          </label>
-          <div>
-            <button>Add Recipe</button>
-          </div>
+          <FlexBox
+            flexDirection={"row"}
+            justifyContent={"space-between"}
+            width={"600px"}
+          >
+            <FlexBox>
+              <label>
+                Title: <input value={title} onChange={onTileChange} />
+              </label>
+            </FlexBox>
+            <FlexBox>
+              <label>
+                vegetarian:
+                <input
+                  type="checkbox"
+                  checked={vegetarian}
+                  onChange={onVegetarianChange}
+                />
+              </label>
+            </FlexBox>
+            <FlexBox>
+              <button>Add Recipe</button>
+            </FlexBox>
+          </FlexBox>
           {loading && <p>Loading...</p>}
           {error && <p>Error :( Please try again</p>}
         </form>

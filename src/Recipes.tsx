@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import gql from "graphql-tag";
 import { ApolloError } from "apollo-boost";
 import { Query } from "react-apollo";
+import FlexBox from "./FlexBox";
 
 interface Recipe {
   id: string;
@@ -28,7 +29,12 @@ export function Recipes() {
   };
 
   return (
-    <>
+    <FlexBox
+      flexDirection="row"
+      alignItems={"center"}
+      justifyContent={"space-between"}
+      width={600}
+    >
       <label>
         <input
           type="checkbox"
@@ -59,6 +65,6 @@ export function Recipes() {
           );
         }}
       </Query>
-    </>
+    </FlexBox>
   );
 }

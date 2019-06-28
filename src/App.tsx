@@ -3,6 +3,7 @@ import ApolloClient from "apollo-boost";
 import { ApolloProvider } from "react-apollo";
 import { Recipes } from "./Recipes";
 import { AddRecipe } from "./AddRecipe";
+import FlexBox from "./FlexBox";
 
 import "./App.css";
 
@@ -11,12 +12,25 @@ const client = new ApolloClient({
   uri: "http://localhost:4000"
 });
 
+const BoxStyle = {
+  borderBottom: "1px solid #000",
+  padding: "20px"
+};
+
 const App: React.FC = () => {
   return (
     <ApolloProvider client={client}>
-      <div className="App">Hello Wrold</div>
-      <AddRecipe />
-      <Recipes />
+      <FlexBox flexDirection={"column"}>
+        <FlexBox style={BoxStyle}>
+          <div className="App">Hello APOLLO</div>
+        </FlexBox>
+        <FlexBox style={BoxStyle}>
+          <AddRecipe />
+        </FlexBox>
+        <FlexBox style={BoxStyle}>
+          <Recipes />
+        </FlexBox>
+      </FlexBox>
     </ApolloProvider>
   );
 };
