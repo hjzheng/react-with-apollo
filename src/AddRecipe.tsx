@@ -33,11 +33,8 @@ const addRecipeMutation = gql`
   }
 `;
 
-<<<<<<< HEAD
 // https://jaredpalmer.com/formik/docs/overview
 
-=======
->>>>>>> cb7ae9c397a099249b0113d8fdbaac6028e63715
 type InitialValues = {
   [propName: string]: any;
 };
