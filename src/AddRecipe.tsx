@@ -33,39 +33,116 @@ const addRecipeMutation = gql`
   }
 `;
 
-enum INPUT_TYPE {
-  "CHECKBOX",
-  "TEXT"
-}
+type InitialValues = {
+  [propName: string]: any;
+};
 
-function useInput(
-  defaultValue: any,
-  type: INPUT_TYPE
-): [any, (e: React.ChangeEvent<HTMLInputElement>) => void, () => void] {
-  let [value, setValue] = useState(defaultValue);
+type Errors = {
+  [propName: string]: any;
+};
 
+type Dirties = {
+  [propName: string]: boolean;
+};
+
+function useForm(
+  initialValues: InitialValues,
+  validate: (values: InitialValues) => Errors,
+  submit: (values: InitialValues) => void
+): [
+  object,
+  (e: React.ChangeEvent<HTMLInputElement>) => void,
+  (e: React.ChangeEvent<HTMLInputElement>) => Errors,
+  () => void,
+  () => void,
+  Errors
+] {
+  let [form, setForm] = useState(initialValues);
+  let [dirties, setDirties] = useState({} as Dirties);
+  let [errors, setErrors] = useState({} as Errors);
+
+  // TODO 缺乏对数组的判断
   const onChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    if (type === INPUT_TYPE.CHECKBOX) {
-      setValue(e.target.checked);
-    }
+    const { type, name, value, checked } = e.target;
 
-    if (type === INPUT_TYPE.TEXT) {
-      setValue(e.target.value);
+    const val = /number|range/.test(type)
+      ? parseFloat(value)
+      : /checkbox/.test(type)
+      ? checked
+      : /radio/.test(type) // is this needed?
+      ? value
+      : value;
+
+    setDirties({
+      ...dirties,
+      [name]: true
+    });
+
+    setForm({
+      ...form,
+      [name]: val
+    });
+  };
+
+  // TODO validate
+  const onBlur = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const { type, name, value, checked } = e.target;
+    const val = /number|range/.test(type)
+      ? parseFloat(value)
+      : /checkbox/.test(type)
+      ? checked
+      : /radio/.test(type) // is this needed?
+      ? value
+      : value;
+
+    if (dirties[name]) {
+      setErrors({
+        ...errors,
+        ...validate({ [name]: val })
+      });
     }
+    return errors;
   };
 
   const onReset = () => {
-    setValue(defaultValue);
+    setForm(initialValues);
   };
 
-  return [value, onChange, onReset];
+  // TODO
+  const onSubmit = () => {
+    submit(form);
+  };
+
+  return [form, onChange, onBlur, onReset, onSubmit, errors];
 }
 
 export function AddRecipe() {
-  let [title, onTileChange, onTitleReset] = useInput("", INPUT_TYPE.TEXT);
-  let [vegetarian, onVegetarianChange, onVegetarianReset] = useInput(
-    false,
-    INPUT_TYPE.CHECKBOX
+  let [form, onChange, onBlur, onReset, onSubmit, errors]: [
+    any,
+    (e: React.ChangeEvent<HTMLInputElement>) => void,
+    (e: React.ChangeEvent<HTMLInputElement>) => void,
+    () => void,
+    () => void,
+    Errors
+  ] = useForm(
+    {
+      title: "",
+      vegetarian: false
+    },
+    values => {
+      let errors: Errors = {};
+
+      if (values.title === "") {
+        errors.title = "title can not be empty";
+      } else {
+        errors.title = "";
+      }
+
+      return errors;
+    },
+    values => {
+      console.log(values);
+    }
   );
 
   return (
@@ -93,13 +170,13 @@ export function AddRecipe() {
             addRecipe({
               variables: {
                 recipe: {
-                  title,
-                  vegetarian
+                  title: form.title,
+                  vegetarian: form.vegetarian
                 }
               }
             });
-            onTitleReset();
-            onVegetarianReset();
+            onSubmit();
+            onReset();
           }}
         >
           <FlexBox
@@ -109,7 +186,14 @@ export function AddRecipe() {
           >
             <FlexBox>
               <label>
-                Title: <input value={title} onChange={onTileChange} />
+                Title:{" "}
+                <input
+                  name="title"
+                  value={form.title}
+                  onChange={onChange}
+                  onBlur={onBlur}
+                />
+                {errors.title}
               </label>
             </FlexBox>
             <FlexBox>
@@ -117,8 +201,10 @@ export function AddRecipe() {
                 vegetarian:
                 <input
                   type="checkbox"
-                  checked={vegetarian}
-                  onChange={onVegetarianChange}
+                  name="vegetarian"
+                  checked={form.vegetarian}
+                  onChange={onChange}
+                  onBlur={onBlur}
                 />
               </label>
             </FlexBox>
