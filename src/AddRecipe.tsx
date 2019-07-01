@@ -3,7 +3,8 @@ import gql from "graphql-tag";
 import FlexBox from "./FlexBox";
 import { ApolloError } from "apollo-boost";
 import { Mutation } from "react-apollo";
-import useForm, { Errors } from "./useForm";
+import useForm, { Errors, FormResult } from "./useForm";
+import * as yup from "yup";
 
 interface Recipe {
   title: string;
@@ -35,14 +36,7 @@ const addRecipeMutation = gql`
 `;
 
 export function AddRecipe() {
-  let [form, onChange, onBlur, onReset, onSubmit, errors]: [
-    any,
-    (e: React.ChangeEvent<HTMLInputElement>) => void,
-    (e: React.ChangeEvent<HTMLInputElement>) => void,
-    () => void,
-    () => void,
-    Errors
-  ] = useForm(
+  let [form, onChange, onBlur, onReset, onSubmit, errors]: FormResult = useForm(
     {
       title: "",
       vegetarian: false

@@ -14,18 +14,20 @@ export type Dirties = {
   [propName: string]: boolean;
 };
 
+export type FormResult = [
+  any,
+  (e: React.ChangeEvent<HTMLInputElement>) => void,
+  (e: React.ChangeEvent<HTMLInputElement>) => void,
+  () => void,
+  () => void,
+  Errors
+];
+
 export default function useForm(
   initialValues: InitialValues,
   validate: (values: InitialValues) => Errors,
   submit: (values: InitialValues) => void
-): [
-  object,
-  (e: React.ChangeEvent<HTMLInputElement>) => void,
-  (e: React.ChangeEvent<HTMLInputElement>) => Errors,
-  () => void,
-  () => void,
-  Errors
-] {
+): FormResult {
   let [form, setForm] = useState(initialValues);
   let [dirties, setDirties] = useState({} as Dirties);
   let [errors, setErrors] = useState({} as Errors);

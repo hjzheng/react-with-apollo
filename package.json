@@ -7,13 +7,15 @@
     "@types/node": "12.0.10",
     "@types/react": "16.8.22",
     "@types/react-dom": "16.8.4",
+    "@types/yup": "^0.26.18",
     "apollo-boost": "^0.4.3",
     "graphql": "^14.3.1",
     "react": "^16.8.6",
     "react-apollo": "^2.5.8",
     "react-dom": "^16.8.6",
     "react-scripts": "3.0.1",
-    "typescript": "3.5.2"
+    "typescript": "3.5.2",
+    "yup": "^0.27.0"
   },
   "scripts": {
     "start": "PORT=9000 react-scripts start",
