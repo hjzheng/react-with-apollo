@@ -1082,6 +1082,14 @@
     "@types/istanbul-reports" "^1.1.1"
     "@types/yargs" "^12.0.9"
 
+"@jxz/flexbox@^0.0.6":
+  version "0.0.6"
+  resolved "https://registry.yarnpkg.com/@jxz/flexbox/-/flexbox-0.0.6.tgz#83b88c94365f373c92d9606f1eb0b68f5ae7aef4"
+  integrity sha512-fPKzrSJhp23tZYOsP1HGpdYjAH3SfVk+oBL4u2pRBVbkz6fYSWUubij/BnDpHmkT9ucJNRvRT+GO7vPZjsZ/hw==
+  dependencies:
+    prop-types "^15.7.2"
+    react "^16.8.6"
+
 "@mrmlnc/readdir-enhanced@^2.2.1":
   version "2.2.1"
   resolved "https://registry.yarnpkg.com/@mrmlnc/readdir-enhanced/-/readdir-enhanced-2.2.1.tgz#524af240d1a360527b730475ecfa1344aa540dde"

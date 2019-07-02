@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import gql from "graphql-tag";
 import { ApolloError } from "apollo-boost";
 import { Query } from "react-apollo";
-import FlexBox from "./FlexBox";
+import FlexBox from "@jxz/flexbox";
 
 interface Recipe {
   id: string;

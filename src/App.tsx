@@ -3,7 +3,7 @@ import ApolloClient from "apollo-boost";
 import { ApolloProvider } from "react-apollo";
 import { Recipes } from "./Recipes";
 import { AddRecipe } from "./AddRecipe";
-import FlexBox from "./FlexBox";
+import FlexBox from "@jxz/flexbox";
 
 import "./App.css";
 

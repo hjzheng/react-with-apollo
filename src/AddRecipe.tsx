@@ -1,10 +1,10 @@
 import React from "react";
 import gql from "graphql-tag";
-import FlexBox from "./FlexBox";
+import FlexBox from "@jxz/flexbox";
 import { ApolloError } from "apollo-boost";
 import { Mutation } from "react-apollo";
 import useForm, { Errors, FormResult } from "./useForm";
-import * as yup from "yup";
+// import * as yup from "yup";
 
 interface Recipe {
   title: string;
