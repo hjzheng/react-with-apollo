@@ -39,7 +39,12 @@ export function AddRecipe() {
   let [form, onChange, onBlur, onReset, onSubmit, errors]: FormResult = useForm(
     {
       title: "",
-      vegetarian: false
+      vegetarian: false,
+      hobby: {
+        reading: false,
+        coding: false
+      },
+      skill: "vue"
     },
     values => {
       let errors: Errors = {};
@@ -94,7 +99,7 @@ export function AddRecipe() {
           <FlexBox
             flexDirection={"row"}
             justifyContent={"space-between"}
-            width={"600px"}
+            width={"800px"}
           >
             <FlexBox>
               <label>
@@ -122,6 +127,54 @@ export function AddRecipe() {
             </FlexBox>
             <FlexBox>
               <button>Add Recipe</button>
+            </FlexBox>
+            <FlexBox>
+              <span>Hobby:</span>
+              <label>
+                reading:
+                <input
+                  type="checkbox"
+                  name="hobby.reading"
+                  checked={form.hobby.reading}
+                  onChange={onChange}
+                  onBlur={onBlur}
+                />
+              </label>
+              <label>
+                coding:
+                <input
+                  type="checkbox"
+                  name="hobby.coding"
+                  checked={form.hobby.coding}
+                  onChange={onChange}
+                  onBlur={onBlur}
+                />
+              </label>
+            </FlexBox>
+            <FlexBox>
+              <span>Skill: onlyone choice</span>
+              <label>
+                vue:
+                <input
+                  type="radio"
+                  name="skill"
+                  value="vue"
+                  checked={form.skill === "vue"}
+                  onChange={onChange}
+                  onBlur={onBlur}
+                />
+              </label>
+              <label>
+                react:
+                <input
+                  type="radio"
+                  name="skill"
+                  value="react"
+                  checked={form.skill === "react"}
+                  onChange={onChange}
+                  onBlur={onBlur}
+                />
+              </label>
             </FlexBox>
           </FlexBox>
           {loading && <p>Loading...</p>}

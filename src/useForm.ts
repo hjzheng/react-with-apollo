@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import _set from "lodash.set";
 
 // https://jaredpalmer.com/formik/docs/overview
 
@@ -32,7 +33,6 @@ export default function useForm(
   let [dirties, setDirties] = useState({} as Dirties);
   let [errors, setErrors] = useState({} as Errors);
 
-  // TODO 缺乏对数组的判断
   const onChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { type, name, value, checked } = e.target;
 
@@ -40,24 +40,24 @@ export default function useForm(
       ? parseFloat(value)
       : /checkbox/.test(type)
       ? checked
-      : /radio/.test(type) // is this needed?
+      : /radio/.test(type)
       ? value
       : value;
 
+    let newForm = _set(form, name, val);
+
     setForm({
-      ...form,
-      [name]: val
+      ...newForm
     });
   };
 
-  // TODO validate
   const onBlur = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { type, name, value, checked } = e.target;
     const val = /number|range/.test(type)
       ? parseFloat(value)
       : /checkbox/.test(type)
       ? checked
-      : /radio/.test(type) // is this needed?
+      : /radio/.test(type)
       ? value
       : value;
 
