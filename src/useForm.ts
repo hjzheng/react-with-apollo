@@ -2,6 +2,8 @@ import React, { useState } from "react";
 import _set from "lodash.set";
 
 // https://jaredpalmer.com/formik/docs/overview
+// https://github.com/wsmd/react-use-form-state
+// https://github.com/kitze/react-hanger
 
 export type InitialValues = {
   [propName: string]: any;
@@ -11,7 +13,7 @@ export type Errors = {
   [propName: string]: any;
 };
 
-export type Dirties = {
+export type Touched = {
   [propName: string]: boolean;
 };
 
@@ -27,24 +29,36 @@ export type FormResult = [
 export default function useForm(
   initialValues: InitialValues,
   validate: (values: InitialValues) => Errors,
-  submit: (values: InitialValues) => void
+  submit: (values: InitialValues, errors: Errors, touched: Touched) => void
 ): FormResult {
   let [form, setForm] = useState(initialValues);
-  let [dirties, setDirties] = useState({} as Dirties);
+  let [touched, setTouched] = useState({} as Touched);
   let [errors, setErrors] = useState({} as Errors);
 
   const onChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { type, name, value, checked } = e.target;
 
-    const val = /number|range/.test(type)
-      ? parseFloat(value)
-      : /checkbox/.test(type)
-      ? checked
-      : /radio/.test(type)
-      ? value
-      : value;
+    let isMultiValue = Array.isArray(form[name]);
 
-    let newForm = _set(form, name, val);
+    let val: any, newForm: any;
+
+    if (!isMultiValue) {
+      // 单值
+      val = /number|range/.test(type)
+        ? parseFloat(value)
+        : /checkbox/.test(type)
+        ? checked
+        : /radio/.test(type)
+        ? value
+        : value;
+
+      newForm = _set(form, name, val);
+    } else {
+      // 多值 checkbox or multi-selector
+      val = new Set(form[name]);
+      checked ? val.add(value) : val.delete(value);
+      newForm = _set(form, name, Array.from(val));
+    }
 
     setForm({
       ...newForm
@@ -52,24 +66,15 @@ export default function useForm(
   };
 
   const onBlur = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const { type, name, value, checked } = e.target;
-    const val = /number|range/.test(type)
-      ? parseFloat(value)
-      : /checkbox/.test(type)
-      ? checked
-      : /radio/.test(type)
-      ? value
-      : value;
+    const { name } = e.target;
 
-    if (dirties[name]) {
-      setErrors({
-        ...errors,
-        ...validate({ [name]: val })
-      });
-    }
+    setErrors({
+      ...errors,
+      ...validate(form)
+    });
 
-    setDirties({
-      ...dirties,
+    setTouched({
+      ...touched,
       [name]: true
     });
 
@@ -82,7 +87,7 @@ export default function useForm(
 
   // TODO
   const onSubmit = () => {
-    submit(form);
+    submit(form, errors, touched);
   };
 
   return [form, onChange, onBlur, onReset, onSubmit, errors];

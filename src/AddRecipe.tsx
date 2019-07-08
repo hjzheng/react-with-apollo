@@ -40,25 +40,20 @@ export function AddRecipe() {
     {
       title: "",
       vegetarian: false,
-      hobby: {
-        reading: false,
-        coding: false
-      },
+      hobby: [],
       skill: "vue"
     },
     values => {
       let errors: Errors = {};
-
       if (values.title === "") {
         errors.title = "title can not be empty";
       } else {
         errors.title = "";
       }
-
       return errors;
     },
-    values => {
-      console.log(values);
+    (values, errors, dirties) => {
+      console.log(values, errors, dirties);
     }
   );
 
@@ -134,8 +129,9 @@ export function AddRecipe() {
                 reading:
                 <input
                   type="checkbox"
-                  name="hobby.reading"
-                  checked={form.hobby.reading}
+                  name="hobby"
+                  value="reading"
+                  checked={form.hobby.includes("reading")}
                   onChange={onChange}
                   onBlur={onBlur}
                 />
@@ -144,8 +140,9 @@ export function AddRecipe() {
                 coding:
                 <input
                   type="checkbox"
-                  name="hobby.coding"
-                  checked={form.hobby.coding}
+                  name="hobby"
+                  value="coding"
+                  checked={form.hobby.includes("coding")}
                   onChange={onChange}
                   onBlur={onBlur}
                 />
